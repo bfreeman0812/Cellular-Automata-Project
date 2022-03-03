@@ -8,10 +8,12 @@ realArray=[" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","
 tempArray=realArray
 
 #case = "   " 
-for i in len(realArray):
-    print(realArray)
-    for position in realArray:
-        print(realArray)
+for i in range(len(realArray)):
+    for x in range(len(realArray)):
+        print(realArray[x], end="")
+        
+    for position in range(len(realArray)):
+        #print(realArray)
         
         test = ""
         
@@ -26,30 +28,31 @@ for i in len(realArray):
            test+=(realArray[0])
            continue
         else:
-            case+=realArray[position-1]
-            case+=realArray[position]
-            case+=realArray[postition+1]
+            test+=realArray[position-1]
+            test+=realArray[position]
+            test+=realArray[position+1]
         
-        match value:
-        case "***":
-            tempArray[position] = " "
-        case "** ":
-            tempArray[position] = " "
-        case "* *":
-            tempArray[position] = " "
-        case "*  ":
-            tempArray[position] = "*"
-        case " **":
-            tempArray[position] = "*"
-        case " * ":
-            tempArray[position] = "*"
-        case "  *":
-            tempArray[position] = "*"
-        case "   ":
-            tempArray[position] = " "
+        # match value:
+        # case "***":
+        #     tempArray[position] = " "
+        # case "** ":
+        #     tempArray[position] = " "
+        # case "* *":
+        #     tempArray[position] = " "
+        # case "*  ":
+        #     tempArray[position] = "*"
+        # case " **":
+        #     tempArray[position] = "*"
+        # case " * ":
+        #     tempArray[position] = "*"
+        # case "  *":
+        #     tempArray[position] = "*"
+        # case "   ":
+        #     tempArray[position] = " "
             
             
     realArray = tempArray
+    print("\n")
 
 #def arrayRules():
 #    match value:
