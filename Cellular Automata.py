@@ -1,4 +1,4 @@
-import numpy as np
+#import numpy as np
 
 #stateArray=[("***"),("** "), ("* *"), ("*  "), (" **"), (" * "),("  *"), ("   ")]
 #value=[]
@@ -8,24 +8,24 @@ realArray=[" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","
 tempArray=realArray
 
 #case = "   " 
-for len(realArray)
+for i in len(realArray):
     print(realArray)
-    for position in realArray
+    for position in realArray:
         print(realArray)
         
         test = ""
         
-        if position == 0
+        if position == 0:
            test+=(realArray[len(realArray)-1])
            test+=(realArray[0])
            test+=(realArray[2])
            continue
-        elif position == (len(realArray)-1)
+        elif position == (len(realArray)-1):
            test+=(realArray[len(realArray)-2])
            test+=(realArray[len(realArray)-1])
            test+=(realArray[0])
            continue
-        else
+        else:
             case+=realArray[position-1]
             case+=realArray[position]
             case+=realArray[postition+1]
