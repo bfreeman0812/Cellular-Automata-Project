@@ -4,8 +4,8 @@ using namespace std;
 
 int main()
 {
-    string realArray[50] = { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "*", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-    string tempArray[50] = { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "*", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+    string realArray[50] = { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "+", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+    string tempArray[50] = { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "+", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
 
     for (int i = 0; i < 50; i++) {
         for (int x = 0; x < 50; x++)
@@ -36,8 +36,7 @@ int main()
                 test += realArray[(position + 2)];
             }
 
-            if (test != "   ")
-                cout << "\n test" << test;
+            
 
             
             int temppos;
@@ -47,28 +46,30 @@ int main()
             }
                 
                 
-            if (test == "***")
+            if (test == "+++")
                 tempArray[position + 1] = " ";
-            else if (test == "** ")
+            else if (test == "++ ")
                 tempArray[position + 1] = " ";
-            else if (test == "* *")
+            else if (test == "+ +")
                 tempArray[position + 1] = " ";
-            else if (test == "*  ")
-                tempArray[position + 1] = "*";
-            else if (test == " **")
-                tempArray[position + 1] = "*";
-            else if (test == " * ")
-                tempArray[position + 1] = "*";
-            else if (test == "  *")
-                tempArray[position + 1] = "*";
+            else if (test == "+  ")
+                tempArray[position + 1] = "+";
+            else if (test == " ++")
+                tempArray[position + 1] = "+";
+            else if (test == " + ")
+                tempArray[position + 1] = "+";
+            else if (test == "  +")
+                tempArray[position + 1] = "+";
             else if (test == "   ")
                 tempArray[position + 1] = " ";
             
             if (position == -1)
                 position = temppos;
         }
-        for (int x = 0; x < 50; x++)
-            cout << tempArray[x];
+        //cout << endl;
+        //for (int x = 0; x < 50; x++)
+          //  cout << tempArray[x];
+        copy(tempArray, tempArray+50, realArray);
         cout << "\n";
     }
 }
