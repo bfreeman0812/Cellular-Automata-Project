@@ -67,5 +67,5 @@ im_ani = animation.ArtistAnimation(fig, ims, interval=700,
 repeat_delay=1000, blit=True)
 
 # Optional to save the animation
-im_ani.save('beacon.gif', writer="pillow")
+im_ani.save('Picture\Beacon.gif', writer="pillow")
 
