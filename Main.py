@@ -2,18 +2,40 @@ import numpy as np
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 
+universe_size = (100,100)
 
-seeds = {  "beacon":[[1, 1, 0, 0],
-                    [1, 1, 0, 0],
-                    [0, 0, 1, 1],
-                    [0, 0, 1, 1]]
+seeds = {  
+    "beacon":[
+        [1, 1, 0, 0],
+        [1, 1, 0, 0],
+        [0, 0, 1, 1],
+        [0, 0, 1, 1]
+    ],
+    "sun":[
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ],
 }
 
 functions = { "pureSurvival", "diseaseSurvival"
 
 }
 
-def main():
+def setup():
 
     choice = " "
     seed_choice = " "
@@ -34,14 +56,14 @@ def main():
 
 
 
-def generation(universe):
+def generation(universe, surv_choice):
     
     new_universe = np.copy(universe)
 
     # Simple loop over every possible xy coordinate.
     for i in range(universe.shape[0]):
         for j in range(universe.shape[1]):
-            new_universe[i,j] = eval("pureSurvival(i, j, universe)")
+            new_universe[i,j] = eval(surv_choice + "(i, j, universe)")
 
     # Set universe to be equal to new_universe.
     universe = np.copy(new_universe)
@@ -83,6 +105,11 @@ def pureSurvival(x, y, universe):
         return 1
     return universe[x, y]
 
+def calcX(x_size):
+    return int((universe_size[0]/2)-(x_size/2))
+
+def calcY(y_size):
+    return int((universe_size[0]/2)-(y_size/2))
 
 
 
@@ -101,37 +128,13 @@ def pureSurvival(x, y, universe):
 
 
 
-#main
 
-choice, seed_choice = main()
-print(seed_choice)
-
-
+surv_choice, seed_choice = setup()
 universe = np.zeros((100, 100))
-
-# beacon = [[1, 1, 0, 0],
-#           [1, 1, 0, 0],
-#           [0, 0, 1, 1],
-#           [0, 0, 1, 1]]
-# universe[1:5,1:5]=beacon
-
-sun = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-universe[40:56, 40:56] = sun
+seed_array = np.array(seeds[seed_choice])
+x_start, y_start = calcX(seed_array.shape[0]), calcY(seed_array.shape[1])
+x_end, y_end = x_start + seed_array.shape[0], y_start + seed_array.shape[1]
+universe[x_start:x_end, y_start:y_end] = seed_array
 
 
 #plt.imshow(universe, cmap='binary')
@@ -149,11 +152,11 @@ ims = []
 for i in range(200):
     # Add a snapshot of the universe, then move to the next generation
     ims.append((plt.imshow(universe, cmap='binary'),))
-    universe = generation(universe)
+    universe = generation(universe, surv_choice)
 
 # Create the animation
 im_ani = animation.ArtistAnimation(fig, ims, interval=700,
 repeat_delay=1000, blit=True)
 
 # Optional to save the animation
-im_ani.save('Pictures\Beacon.gif', writer="pillow")
+im_ani.save(seed_choice + surv_choice +'.gif', writer="pillow")
