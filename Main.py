@@ -31,7 +31,7 @@ seeds = {
         ],
 }
 
-functions = { "pureSurvival", "diseaseSurvival"
+functions = { "pureSurvival", "diseaseSurvival", "wideSurvival"
 
 }
 
@@ -105,6 +105,34 @@ def pureSurvival(x, y, universe):
         return 1
     return universe[x, y]
 
+def wideSurvival(x, y, universe):#, multiplier):
+    """
+    Compute one iteration of Life for one cell.
+    :param x: x coordinate of cell in the universe
+    :type x: int
+    :param y: y coordinate of cell in the universe
+    :type y: int
+    :param universe: the universe of cells
+    :type universe: np.ndarray
+    :param multiplier: multiplier for the weight of the second circle from the cell
+    :type multiplier: float
+    """
+    multiplier = .5
+    num_neighbours = (multiplier * sumSecondCircleEven(x, y, universe)) + np.sum(universe[x - 1 : x + 2, y - 1 : y + 2]) - universe[x, y] 
+
+    if universe[x, y] and not 3 <= num_neighbours <= 5:
+        return 0
+    elif num_neighbours == 1:
+        return 1    
+    
+    return universe[x,y]
+
+def sumSecondCircleEven(x, y, universe):
+    num_neighbours = np.sum(universe[x - 2 : x + 3, y - 2 : y + 3]) - universe[x, y] 
+    num_second_circle = num_neighbours - np.sum(universe[x - 1 : x + 2, y - 1 : y + 2]) - universe[x, y]
+
+    return num_second_circle
+
 def calcX(x_size):
     return int((universe_size[0]/2)-(x_size/2))
 
@@ -115,21 +143,10 @@ def calcY(y_size):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 surv_choice, seed_choice = setup()
+
+print("Setting up ...")
+
 universe = np.zeros((100, 100))
 seed_array = np.array(seeds[seed_choice])
 x_start, y_start = calcX(seed_array.shape[0]), calcY(seed_array.shape[1])
@@ -149,6 +166,8 @@ fig = plt.figure(dpi=200)
 plt.axis('off')
 ims = []
 
+
+print("Running ...")
 for i in range(200):
     # Add a snapshot of the universe, then move to the next generation
     ims.append((plt.imshow(universe, cmap='binary'),))
@@ -160,3 +179,5 @@ repeat_delay=1000, blit=True)
 
 # Optional to save the animation
 im_ani.save(seed_choice + surv_choice +'.gif', writer="pillow")
+
+print("File saved as " + seed_choice + surv_choice +".gif")
