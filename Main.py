@@ -1,3 +1,4 @@
+from random import randint
 import numpy as np
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
@@ -31,7 +32,7 @@ seeds = {
         ],
 }
 
-functions = { "pureSurvival", "diseaseSurvival"
+functions = { "pureSurvival", "diseaseSurvival", "spontLife"
 
 }
 
@@ -56,14 +57,14 @@ def setup():
 
 
 
-def generation(universe, surv_choice):
+def generation(universe, index_universe, surv_choice):
     
     new_universe = np.copy(universe)
 
     # Simple loop over every possible xy coordinate.
     for i in range(universe.shape[0]):
         for j in range(universe.shape[1]):
-            new_universe[i,j] = eval(surv_choice + "(i, j, universe)")
+            new_universe[i,j] = eval(surv_choice + "(i, j, universe, index_universe)")
 
     # Set universe to be equal to new_universe.
     universe = np.copy(new_universe)
@@ -105,6 +106,32 @@ def pureSurvival(x, y, universe):
         return 1
     return universe[x, y]
 
+def spontLife(x, y, universe, index_universe):
+
+    for i in range(universe.shape[0]):
+        for j in range(universe.shape[1]):
+            if universe[i,j]== 0:
+                index_universe[i,j]==index_universe[i,j]+1
+            elif universe[i,j]==1:
+                index_universe[i,j]=0
+                 
+
+            if index_universe[i,j]==40:
+                universe[i,j]=randint[0,1]
+
+    num_neighbours = np.sum(universe[x - 1 : x + 2, y - 1 : y + 2]) - universe[x, y]
+    # The rules of Life
+    if universe[x, y] and not 2 <= num_neighbours <= 3:
+        return 0
+    elif num_neighbours == 3:
+        return 1
+    return universe[x, y]
+
+
+
+    
+    
+
 def calcX(x_size):
     return int((universe_size[0]/2)-(x_size/2))
 
@@ -131,6 +158,7 @@ def calcY(y_size):
 
 surv_choice, seed_choice = setup()
 universe = np.zeros((100, 100))
+index_universe=np.zeros((100,100))
 seed_array = np.array(seeds[seed_choice])
 x_start, y_start = calcX(seed_array.shape[0]), calcY(seed_array.shape[1])
 x_end, y_end = x_start + seed_array.shape[0], y_start + seed_array.shape[1]
@@ -152,7 +180,7 @@ ims = []
 for i in range(200):
     # Add a snapshot of the universe, then move to the next generation
     ims.append((plt.imshow(universe, cmap='binary'),))
-    universe = generation(universe, surv_choice)
+    universe = generation(universe, surv_choice, index_universe)
 
 # Create the animation
 im_ani = animation.ArtistAnimation(fig, ims, interval=700,
