@@ -31,7 +31,7 @@ seeds = {
         ],
 }
 
-functions = { "pureSurvival", "diseaseSurvival", "wideSurvival"
+functions = { "pureSurvival", "diseaseSurvival", "wideSurvival", "spontLife"
 
 }
 
@@ -56,14 +56,17 @@ def setup():
 
 
 
-def generation(universe, surv_choice):
+def generation(universe, surv_choice, index_universe):
     
     new_universe = np.copy(universe)
 
     # Simple loop over every possible xy coordinate.
     for i in range(universe.shape[0]):
         for j in range(universe.shape[1]):
-            new_universe[i,j] = eval(surv_choice + "(i, j, universe)")
+            if surv_choice == "spontLife":
+                new_universe[i,j] = eval(surv_choice + "(i, j, universe, index_universe)")
+            else:
+                new_universe[i,j] = eval(surv_choice + "(i, j, universe)")
 
     # Set universe to be equal to new_universe.
     universe = np.copy(new_universe)
@@ -127,6 +130,31 @@ def wideSurvival(x, y, universe):#, multiplier):
     
     return universe[x,y]
 
+def spontLife(x, y, universe, index_universe):
+
+    if universe[x,y]== 0:
+        index_universe[x,y]=index_universe[x,y]+1
+    elif universe[x,y]==1:
+        index_universe[x,y]=0
+                
+    if  index_universe[x,y]>=20:
+        if random.randint(1,20) == 1:
+            universe[x,y] = 1
+    elif  index_universe[x,y]>=40:
+        if random.randint(1,10) == 1:
+            universe[x,y] = 1
+    elif  index_universe[x,y]>=60:    
+        if random.randint(1,5) == 1:
+            universe[x,y] = 1
+
+    num_neighbours = np.sum(universe[x - 1 : x + 2, y - 1 : y + 2]) - universe[x, y]
+    # The rules of Life
+    if universe[x, y] and not 2 <= num_neighbours <= 3:
+        return 0
+    elif num_neighbours == 3:
+        return 1
+    return universe[x, y]
+
 def sumSecondCircleEven(x, y, universe):
     num_neighbours = np.sum(universe[x - 2 : x + 3, y - 2 : y + 3]) - universe[x, y] 
     num_second_circle = num_neighbours - np.sum(universe[x - 1 : x + 2, y - 1 : y + 2]) - universe[x, y]
@@ -148,6 +176,7 @@ surv_choice, seed_choice = setup()
 print("Setting up ...")
 
 universe = np.zeros((100, 100))
+index_universe = np.zeros((100,100))
 seed_array = np.array(seeds[seed_choice])
 x_start, y_start = calcX(seed_array.shape[0]), calcY(seed_array.shape[1])
 x_end, y_end = x_start + seed_array.shape[0], y_start + seed_array.shape[1]
@@ -171,7 +200,7 @@ print("Running ...")
 for i in range(200):
     # Add a snapshot of the universe, then move to the next generation
     ims.append((plt.imshow(universe, cmap='binary'),))
-    universe = generation(universe, surv_choice)
+    universe = generation(universe, surv_choice, index_universe)
 
 # Create the animation
 im_ani = animation.ArtistAnimation(fig, ims, interval=700,
