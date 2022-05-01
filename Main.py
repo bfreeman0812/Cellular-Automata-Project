@@ -32,7 +32,7 @@ seeds = {
         ],
 }
 
-functions = { "pureSurvival", "diseaseSurvival", "wideSurvival", "spontLife"
+functions = { "pureSurvival", "diseaseSurvival", "wideSurvival", "spontLife", "spontDeath"
 
 }
 
@@ -65,6 +65,8 @@ def generation(universe, surv_choice, index_universe):
     for i in range(universe.shape[0]):
         for j in range(universe.shape[1]):
             if surv_choice == "spontLife":
+                new_universe[i,j] = eval(surv_choice + "(i, j, universe, index_universe)")
+            elif surv_choice == "spontDeath":
                 new_universe[i,j] = eval(surv_choice + "(i, j, universe, index_universe)")
             else:
                 new_universe[i,j] = eval(surv_choice + "(i, j, universe)")
@@ -153,6 +155,40 @@ def spontLife(x, y, universe, index_universe):
     if universe[x, y] and not 2 <= num_neighbours <= 3:
         return 0
     elif num_neighbours == 3:
+        return 1
+    return universe[x, y]
+
+def spontDeath(x, y, universe, index_universe):
+    """
+    Compute one iteration of Life for one cell.
+    :param x: x coordinate of cell in the universe
+    :type x: int
+    :param y: y coordinate of cell in the universe
+    :type y: int
+    :param universe: the universe of cells
+    :type universe: np.ndarray
+    """
+
+    if universe[x,y]== 1:
+        index_universe[x,y]=index_universe[x,y]+1
+    elif universe[x,y]==1:
+        index_universe[x,y]=0
+
+    if  index_universe[x,y]>=10:
+        if random.randint(1,5) == 1:
+            universe[x,y] = 0
+    elif  index_universe[x,y]>=20:
+        if random.randint(1,5) == 1 or random.randint(1,5) == 2:
+            universe[x,y] = 0
+    elif  index_universe[x,y]>=30:    
+        if random.randint(1,5) == 1 or random.randint(1,5) == 2 or random.randint(1,5) == 3:
+            universe[x,y] = 0
+
+    num_neighbours = np.sum(universe[x - 1 : x + 2, y - 1 : y + 2]) - universe[x, y]
+    # The rules of Life
+    if universe[x, y] and not 3 <= num_neighbours <= 5:
+        return 0
+    elif num_neighbours == 1:
         return 1
     return universe[x, y]
 
