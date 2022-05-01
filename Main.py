@@ -1,3 +1,4 @@
+import random
 import numpy as np
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
